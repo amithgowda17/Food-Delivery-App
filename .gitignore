@@ -1,6 +1,12 @@
 # Compiled class file
 *.class
 
+dist/
+
+.parcel-cache/
+
+node_modules/
+
 # Log file
 *.log
 
