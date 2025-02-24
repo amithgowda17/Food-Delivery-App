@@ -1,7 +1,23 @@
-# Compiled class file
+# Ignore configuration files
+.postcssrc
+tailwind.config.js
+
+# Ignore node_modules (dependency folder)
+node_modules/
+
+# Ignore parcel cache
+.parcel-cache/
+
+# Ignore build/dist folder
+dist/
+
+# Ignore package lock file
+package-lock.json
+
+# Compiled class files
 *.class
 
-# Log file
+# Log files
 *.log
 
 # BlueJ files
@@ -19,6 +35,6 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Virtual machine crash logs
 hs_err_pid*
 replay_pid*

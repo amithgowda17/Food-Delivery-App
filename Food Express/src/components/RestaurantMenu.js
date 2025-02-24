@@ -1,61 +1,42 @@
-import { useEffect, useState } from "react";
+
 import Shimmer from "./Shimmer";
-import { Menu_Link } from "../utils/constants";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
 import { useParams } from "react-router";
+import RestaurantCategory from "./RestaurantCategory";
 
 export const RestaurantMenu = () => {
-  const [items, setItems] = useState(null);
-
   
+
   const {resId} = useParams();
 
-  useEffect(() => {
-    menuData();
-  }, []);
-
-  const menuData = async () => {
-      const response = await fetch(
-        Menu_Link+resId
-      );
-
-      const menuItems = await response.json();
-
-        setItems(menuItems.data);
-  };
+  const items=useRestaurantMenu(resId);
+ 
 
   if (items === null) {
     return <Shimmer />;
   }
 
-  const cardData = items?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card?.card?.itemCards;
-
-  const otherResdata=items?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[5]?.card?.card?.itemCards;
-
   const{name,cuisines,costForTwoMessage} = items?.cards[2]?.card?.card?.info;
 
- console.log(cardData);
- console.log(otherResdata);
-  
+  const categories = items?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter((res) =>
+    res.card?.card?.["@type"]==="type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+  )
+
+  console.log("categories",categories);
 
 
- const isCardDataValid = Array.isArray(cardData) && cardData.length >=4;
- const itemsToDisplay = isCardDataValid ? cardData : otherResdata;
+
 
 
   return (
-    <div className="menu-container">
-      <h1>{name}</h1>
-      <p>
+    <div className="text-center">
+      <h1 className="my-6 font-bold text-xl">{name}</h1>
+      <p className="font-bold text-lg">
         {cuisines.join(", ")} - {costForTwoMessage}
       </p>
-      <h2>Menu</h2>
-      <ul>
-        {itemsToDisplay?(itemsToDisplay.map((res) => (
-          <li key={res.card.info.id}>
-            {res.card.info.name} - Rs. {res.card.info.price / 100 || res.card.info.defaultPrice/100}
-          </li>
-        ))):<h2>Menu Not Available</h2>}
-      </ul>
+      {
+        categories.map((category)  =>( <RestaurantCategory key={category?.card?.card.title} data={category?.card?.card} /> ))
+      }
     </div>
   );
 
