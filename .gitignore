@@ -2,6 +2,9 @@
 .postcssrc
 tailwind.config.js
 
+mintty.exe.stackdump
+
+
 # Ignore node_modules (dependency folder)
 node_modules/
 
